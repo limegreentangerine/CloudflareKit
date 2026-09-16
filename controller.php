@@ -6,12 +6,14 @@ use Core;
 use Events;
 use Cloudflare\Package\PageTrait;
 use Concrete\Core\Package\Package;
+use Cloudflare\Package\CaptchaTrait;
 use Concrete\Core\Package\PackageService;
 use Cloudflare\Events\Cache as CacheEvent;
 
 class Controller extends Package
 {
     use PageTrait;
+    use CaptchaTrait;
 
     /**
      * The packages handle.
@@ -117,7 +119,11 @@ class Controller extends Package
 
     protected function installOrUpgrade(\Concrete\Core\Entity\Package $pkg): void
     {
+        // add dashboard page
         $this->addSinglePage('/dashboard/cloudflare', $pkg, t('Cloudflare'), t('Cloudflare API settings.'));
+
+        // install CF Turnstile as Captcha option
+        $this->addCaptchaLibrary('cfTurnstile', t('Cloudflare Turnstile'), $pkg);
     }
 
     public function getPackageName()
