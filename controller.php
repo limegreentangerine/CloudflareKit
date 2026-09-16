@@ -2,12 +2,17 @@
 
 namespace Concrete\Package\Cloudflare;
 
+use Core;
 use Events;
+use Cloudflare\Package\PageTrait;
 use Concrete\Core\Package\Package;
+use Concrete\Core\Package\PackageService;
 use Cloudflare\Events\Cache as CacheEvent;
 
 class Controller extends Package
 {
+    use PageTrait;
+
     /**
      * The packages handle.
      * Note that this must be unique in the
@@ -110,6 +115,11 @@ class Controller extends Package
         });
     }
 
+    protected function installOrUpgrade(\Concrete\Core\Entity\Package $pkg): void
+    {
+        $this->addSinglePage('/dashboard/cloudflare', $pkg, t('Cloudflare'), t('Cloudflare API settings.'));
+    }
+
     public function getPackageName()
     {
         return t('Cloudflare');
@@ -123,5 +133,24 @@ class Controller extends Package
     public function on_start()
     {
         $this->registerEvents();
+    }
+
+    /**
+     * The packages install routine.
+     */
+    public function install()
+    {
+        $pkg = parent::install();
+        $this->installOrUpgrade($pkg);
+    }
+
+    /**
+     * The packages upgrade routine.
+     */
+    public function upgrade()
+    {
+        $pkg = Core::make(PackageService::class)->getByHandle($this->pkgHandle);
+        parent::upgrade();
+        $this->installOrUpgrade($pkg);
     }
 }
