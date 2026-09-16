@@ -3,12 +3,12 @@
 namespace Concrete\Package\Cloudflare\Controller\SinglePage\Dashboard;
 
 use Concrete\Core\Entity\Package;
+use Concrete\Core\Package\PackageService;
+use Concrete\Core\Config\Repository\Liaison;
 use Concrete\Core\Error\UserMessageException;
 use Cloudflare\Api\Connection as CloudflareApi;
 use Concrete\Core\Http\ResponseFactoryInterface;
-use Concrete\Core\Package\PackageService;
 use Concrete\Core\Page\Controller\DashboardPageController;
-use Concrete\Core\Site\Config\Liaison;
 
 class Cloudflare extends DashboardPageController
 {
@@ -38,8 +38,10 @@ class Cloudflare extends DashboardPageController
     {
         parent::on_start();
 
-        $this->pkg = $this->app->make(PackageService::class)->getByHandle('clouflare');
-        if (!is_object($this->pkg)) throw new UserMessageException(t('Cloudflare Package not found'));
+        $this->pkg = $this->app->make(PackageService::class)->getByHandle('cloudflare');
+        if (!is_object($this->pkg)) {
+            throw new UserMessageException(t('Cloudflare Package not found'));
+        }
         $this->set('pkg', $this->pkg);
 
         $this->config = $this->pkg->getFileConfig();
@@ -53,7 +55,9 @@ class Cloudflare extends DashboardPageController
                 $this->error->add($this->token->getErrorMessage());
             }
 
-            if (!is_object($this->pkg)) throw new UserMessageException(t('Cloudflare Package not found'));
+            if (!is_object($this->pkg)) {
+                throw new UserMessageException(t('Cloudflare Package not found'));
+            }
 
             $this->validate($this->request);
 

@@ -3,10 +3,12 @@
 namespace Cloudflare\Events;
 
 use Core;
+use UserGroup;
+use Concrete\Core\User\User;
 use Cloudflare\Log\CloudflareLog;
 use Monolog\Logger as MonologLogger;
-use Concrete\Core\Site\Config\Liaison;
 use Concrete\Core\Package\PackageService;
+use Concrete\Core\Config\Repository\Liaison;
 use Cloudflare\Api\Connection as CloudflareApi;
 
 class Cache
@@ -78,9 +80,11 @@ class Cache
     /**
      * Enable Dev Mode
      */
-    public static function enableDevMode(): void
+    public static function enableDevMode(User $user): void
     {
-        if (self::getActivate() && self::useDevMode()) {
+        $adminGroup = UserGroup::getByName('Administrators');
+
+        if (self::getActivate() && self::useDevMode() && $user->inGroup($adminGroup)) {
             $response = self::getApi()->setDevelopmentMode('on');
             $body = json_decode($response->getContent());
 

@@ -18,8 +18,6 @@ class Connection extends ConnectionInterface
 
     protected string $apiToken;
 
-    protected string $format = 'json';
-
     public function __construct()
     {
         $this->pkg = Core::make(PackageService::class)->getByHandle('cloudflare');
@@ -35,7 +33,7 @@ class Connection extends ConnectionInterface
             'Authorization' => 'Bearer ' . $this->getApiToken(),
         ];
 
-        parent::__construct($this->config->get('cloudflare.base_url'), $this->format, $headers);
+        parent::__construct($this->config->get('cloudflare.base_url'), 'json', $headers);
     }
 
     /**

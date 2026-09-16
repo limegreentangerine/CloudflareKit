@@ -104,8 +104,9 @@ class Controller extends Package
 
     protected function registerEvents()
     {
-        Events::addListener('on_user_login', function () {
-            CacheEvent::enableDevMode();
+        Events::addListener('on_user_login', function (\Concrete\Core\User\Event\User $event) {
+            $user = $event->getUserObject();
+            CacheEvent::enableDevMode($user);
         });
 
         Events::addListener('on_user_logout', function () {

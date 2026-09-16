@@ -57,6 +57,14 @@
             </div>
 
             <div class="form-group">
+                <div class="form-check">
+                    <input type="checkbox" id="activate" name="activate" class="form-check-input" value="1" <?php echo (isset($formContent) && isset($formContent['use_dev_mode'])) ? 'checked' : ((isset($pkg) && $pkg->getFileConfig()->get('cloudflare.use_dev_mode') == true) ? 'checked' : ''); ?> />
+                    <label for="activate" class="form-check-label"><?php echo t('Use Development Mode'); ?></label>
+                </div>
+                <div class="help-block"><?php echo t('Use development mode when a user in the administrator group, or is a super user, logs in.'); ?></div>
+            </div>
+
+            <div class="form-group">
                 <label for="base_url" class="form-label"><?php echo t('API Base URL'); ?></label>
                 <div class="float-end">
                     <span class="text-muted small"><?php echo t('Required'); ?></span>
