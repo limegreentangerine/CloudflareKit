@@ -2,18 +2,22 @@
 
 namespace Cloudflare\Events;
 
-use Log;
 use Core;
+use Cloudflare\Log\CloudflareLog;
+use Monolog\Logger as MonologLogger;
 use Concrete\Core\Site\Config\Liaison;
 use Concrete\Core\Package\PackageService;
 use Cloudflare\Api\Connection as CloudflareApi;
 
 class Cache
 {
+    protected MonologLogger $logger;
+
     public function __construct()
     {
-        throw new \Exception('Not implemented - need to add logger');
+        $this->logger = Core::make(CloudflareLog::class)->getLogger();
     }
+
     /**
      * Get the value of config
      *
@@ -37,6 +41,16 @@ class Cache
     public static function getApi(): CloudflareApi
     {
         return new CloudflareApi();
+    }
+
+    /**
+     * Get Logger
+     *
+     * @return MonologLogger
+     */
+    public static function getLogger(): MonologLogger
+    {
+        return self::$logger;
     }
 
     /**
@@ -71,9 +85,9 @@ class Cache
             $body = json_decode($response->getContent());
 
             if ($body->success) {
-                Log::addInfo('Cloudflare development mode activated.');
+                self::getLogger()->addInfo('Cloudflare development mode activated.');
             } else {
-                Log::addWarning('Cloudflare development mode failed to activate.');
+                self::getLogger()->addWarning('Cloudflare development mode failed to activate.');
             }
         }
     }
@@ -88,9 +102,9 @@ class Cache
             $body = json_decode($response->getContent());
 
             if ($body->success) {
-                Log::addInfo('Cloudflare development mode deactivated.');
+                self::getLogger()->addInfo('Cloudflare development mode deactivated.');
             } else {
-                Log::addWarning('Cloudflare development mode failed to deactivate.');
+                self::getLogger()->addWarning('Cloudflare development mode failed to deactivate.');
             }
         }
     }
@@ -105,10 +119,10 @@ class Cache
             $body = json_decode($response->getContent());
 
             if ($body->success) {
-                Log::addInfo('Cloudflare cache successfully cleared by force.');
+                self::getLogger()->addInfo('Cloudflare cache successfully cleared by force.');
             } else {
-                Log::addWarning('Cloudflare cache failed to be cleared by force.');
-                Log::addInfo(json_encode($body));
+                self::getLogger()->addWarning('Cloudflare cache failed to be cleared by force.');
+                self::getLogger()->addInfo(json_encode($body));
             }
         }
     }
