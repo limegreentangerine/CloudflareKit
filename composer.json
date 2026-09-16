@@ -1,17 +1,17 @@
 {
-	"name": "limegreentangerine/composer_package",
-	"description": "composer_description",
+	"name": "limegreentangerine/cloudflare",
+	"description": "Cloudflare API actions",
 	"type": "concrete5-package",
 	"license": "MIT",
 	"minimum-stability": "stable",
 	"autoload": {
 		"psr-4": {
-			"ComposerPackage\\": "src/"
+			"Cloudflare\\": "src/"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"ComposerPackage\\Tests\\": "tests/"
+			"Cloudflare\\Tests\\": "tests/"
 		}
 	},
 	"authors": [],

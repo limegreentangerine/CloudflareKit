@@ -1,5 +1,5 @@
 {
-	"name": "composer_package",
+	"name": "cloudflare",
 	"version": "1.0.0-beta.1",
 	"description": "",
 	"main": "index.js",
@@ -11,16 +11,16 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/limegreentangerine/lgt_toolkit.git"
+		"url": "git+https://github.com/limegreentangerine/cloudflare.git"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"type": "commonjs",
 	"bugs": {
-		"url": "https://github.com/limegreentangerine/lgt_toolkit/issues"
+		"url": "https://github.com/limegreentangerine/cloudflare/issues"
 	},
-	"homepage": "https://github.com/limegreentangerine/lgt_toolkit#readme",
+	"homepage": "https://github.com/limegreentangerine/cloudflare",
 	"devDependencies": {
 		"prettier": "^3.9.6"
 	}

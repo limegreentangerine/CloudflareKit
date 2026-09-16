@@ -7,7 +7,7 @@
     colors="true"
 >
     <testsuites>
-        <testsuite name="ComposerPackage">
+        <testsuite name="Cloudflare">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
