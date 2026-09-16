@@ -26,13 +26,13 @@ page and registers **Cloudflare Turnstile** as a CAPTCHA library.
 
 Open **Dashboard > Cloudflare** and configure:
 
-| Setting | Description |
-| --- | --- |
-| Activate | Enables the package’s event-driven Cloudflare actions. |
-| Use Development Mode | Enables Development Mode for administrators while they are logged in. |
-| API Base URL | Cloudflare API base URL. The default is `https://api.cloudflare.com/client/v4`. |
-| Zone ID | The Cloudflare Zone ID for the site. |
-| API Token | A Cloudflare API token used to authenticate API requests. |
+| Setting              | Description                                                                     |
+| -------------------- | ------------------------------------------------------------------------------- |
+| Activate             | Enables the package’s event-driven Cloudflare actions.                          |
+| Use Development Mode | Enables Development Mode for administrators while they are logged in.           |
+| API Base URL         | Cloudflare API base URL. The default is `https://api.cloudflare.com/client/v4`. |
+| Zone ID              | The Cloudflare Zone ID for the site.                                            |
+| API Token            | A Cloudflare API token used to authenticate API requests.                       |
 
 The API token is stored in the package configuration. Use a token limited to
 the permissions required by this package rather than a global API key. The
