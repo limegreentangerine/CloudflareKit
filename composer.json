@@ -2,7 +2,7 @@
 	"name": "limegreentangerine/cloudflare",
 	"description": "Cloudflare API actions",
 	"type": "concrete5-package",
-	"license": "MIT",
+	"license": "proprietary",
 	"minimum-stability": "stable",
 	"autoload": {
 		"psr-4": {
