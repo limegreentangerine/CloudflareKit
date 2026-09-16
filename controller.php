@@ -2,7 +2,9 @@
 
 namespace Concrete\Package\Cloudflare;
 
+use Events;
 use Concrete\Core\Package\Package;
+use Cloudflare\Events\Cache as CacheEvent;
 
 class Controller extends Package
 {
@@ -20,7 +22,7 @@ class Controller extends Package
      *
      * @var string
      */
-    protected $pkgVersion = '0.0.0';
+    protected $pkgVersion = '1.0.0-beta.1';
 
     /**
      * The minimum Concrete version compatible with the package.
@@ -93,6 +95,17 @@ class Controller extends Package
      */
     protected $tasks = [];
 
+    protected function registerEvents()
+    {
+        // Events::addListener('on_user_logout', function () {
+        //     CacheEvent::disableDevMode();
+        // });
+
+        Events::addListener('on_cache_flush', function () {
+            CacheEvent::forceCacheClear();
+        });
+    }
+
     public function getPackageName()
     {
         return t('cloudflare');
@@ -101,5 +114,10 @@ class Controller extends Package
     public function getPackageDescription()
     {
         return t('Cloudflare API actions');
+    }
+
+    public function on_start()
+    {
+        $this->registerEvents();
     }
 }
