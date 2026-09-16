@@ -6,6 +6,7 @@ use Core;
 use Concrete\Core\Entity\Package;
 use Concrete\Core\Package\PackageService;
 use Concrete\Core\Config\Repository\Liaison;
+use Symfony\Component\HttpFoundation\Response;
 
 class Connection extends ConnectionInterface
 {
@@ -17,6 +18,8 @@ class Connection extends ConnectionInterface
 
     protected string $apiToken;
 
+    protected string $format = 'json';
+
     public function __construct()
     {
         $this->pkg = Core::make(PackageService::class)->getByHandle('cloudflare');
@@ -26,14 +29,13 @@ class Connection extends ConnectionInterface
 
         $this->config = $this->pkg->getFileConfig();
 
-        // $this->setZoneID($pkg->getFileConfig()->get('lgt_toolkit.cloudflare.zone_id'));
-        // $this->setApiToken($pkg->getFileConfig()->get('lgt_toolkit.cloudflare.token'));
-        // $format = 'json';
-        // $headers = [
-        //     'Authorization' => 'Bearer ' . $this->getApiToken()
-        // ];
+        $this->setZoneID($this->config->get('cloudflare.zone_id'));
+        $this->setApiToken($this->config->get('cloudflare.token'));
+        $headers = [
+            'Authorization' => 'Bearer ' . $this->getApiToken(),
+        ];
 
-        // parent::__construct($pkg->getFileConfig()->get('lgt_toolkit.cloudflare.base_url'), $format, $headers);
+        parent::__construct($this->config->get('cloudflare.base_url'), $this->format, $headers);
     }
 
     /**
@@ -41,7 +43,7 @@ class Connection extends ConnectionInterface
      *
      * @return string
      */
-    public function getZoneId()
+    public function getZoneId(): string
     {
         return $this->zoneId;
     }
@@ -53,7 +55,7 @@ class Connection extends ConnectionInterface
      *
      * @return self
      */
-    public function setZoneId(string $zoneId)
+    public function setZoneId(string $zoneId): self
     {
         $this->zoneId = $zoneId;
 
@@ -65,7 +67,7 @@ class Connection extends ConnectionInterface
      *
      * @return string
      */
-    public function getApiToken()
+    public function getApiToken(): string
     {
         return $this->apiToken;
     }
@@ -77,7 +79,7 @@ class Connection extends ConnectionInterface
      *
      * @return self
      */
-    public function setApiToken(string $apiToken)
+    public function setApiToken(string $apiToken): self
     {
         $this->apiToken = $apiToken;
 
@@ -89,7 +91,7 @@ class Connection extends ConnectionInterface
      *
      * @return Response
      */
-    public function getDevelopmentMode()
+    public function getDevelopmentMode(): Response
     {
         $url = sprintf('/zones/%s/settings/development_mode', $this->getZoneID());
         $response = $this->makeRequest('GET', $url);
@@ -103,7 +105,7 @@ class Connection extends ConnectionInterface
      *
      * @return Response
      */
-    public function setDevelopmentMode(string $value = 'off')
+    public function setDevelopmentMode(string $value = 'off'): Response
     {
         $url = sprintf('/zones/%s/settings/development_mode', $this->getZoneID());
         $response = $this->makeRequest('PATCH', $url, [
@@ -117,7 +119,7 @@ class Connection extends ConnectionInterface
      *
      * @return Response
      */
-    public function purgeCache()
+    public function purgeCache(): Response
     {
         $url = sprintf('/zones/%s/purge_cache', $this->getZoneID());
         $response = $this->makeRequest('POST', $url, [

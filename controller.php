@@ -97,9 +97,13 @@ class Controller extends Package
 
     protected function registerEvents()
     {
-        // Events::addListener('on_user_logout', function () {
-        //     CacheEvent::disableDevMode();
-        // });
+        Events::addListener('on_user_login', function () {
+            CacheEvent::enableDevMode();
+        });
+
+        Events::addListener('on_user_logout', function () {
+            CacheEvent::disableDevMode();
+        });
 
         Events::addListener('on_cache_flush', function () {
             CacheEvent::forceCacheClear();
@@ -108,7 +112,7 @@ class Controller extends Package
 
     public function getPackageName()
     {
-        return t('cloudflare');
+        return t('Cloudflare');
     }
 
     public function getPackageDescription()
