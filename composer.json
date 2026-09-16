@@ -14,7 +14,12 @@
 			"Cloudflare\\Tests\\": "tests/"
 		}
 	},
-	"authors": [],
+	"authors": [
+		{
+			"name": "Lee Jones",
+			"email": "prolific.jones82@gmail.com"
+		}
+	],
 	"require-dev": {
 		"php": "^8.4",
 		"phpunit/phpunit": "^11",
