@@ -2,6 +2,8 @@
 
 namespace Concrete\Package\Cloudflare\Controller\SinglePage\Dashboard;
 
+use Exception;
+use ClassKit\Api\Response\ErrorResponse;
 use Concrete\Core\Entity\Package;
 use Concrete\Core\Package\PackageService;
 use Concrete\Core\Config\Repository\Liaison;
@@ -9,6 +11,8 @@ use Concrete\Core\Error\UserMessageException;
 use Cloudflare\Api\Connection as CloudflareApi;
 use Concrete\Core\Http\ResponseFactoryInterface;
 use Concrete\Core\Page\Controller\DashboardPageController;
+use Error;
+use Symfony\Component\HttpFoundation\Response;
 
 class Cloudflare extends DashboardPageController
 {
@@ -59,7 +63,9 @@ class Cloudflare extends DashboardPageController
                 throw new UserMessageException(t('Cloudflare Package not found'));
             }
 
-            $this->validate($this->request);
+            if ($this->request->request('activate') !== null) {
+                $this->validate($this->request);
+            }
 
             if (!$this->error->has()) {
                 if ($this->request->request('activate') !== null) {
@@ -105,38 +111,27 @@ class Cloudflare extends DashboardPageController
 
     public function getDevelopmentMode(): string
     {
-        return '';
+        try {
+            $api = new CloudflareApi();
+            $response = $api->getDevelopmentMode();
+            $body = json_decode($response->getContent());
 
-        //TODO: look at this getDevelopmentMode() function
-        $api = new CloudflareApi();
-        $response = $api->getDevelopmentMode();
-
-        if ($response->getStatusCode() !== 200) {
-            $error_string = $response->getUrl() . ' - (' . $response->getStatusCode() . ' ' . $response->getStatusText($response->getStatusCode()) . ')';
-
-            $body = $response->getBodyDecoded();
-            foreach ($body->errors as $error) {
-                $error_string = $error_string . ' ' . $error->message;
+            if ($body->result == null) {
+                throw new Exception(t('Empty response'));
             }
 
-            return $error_string;
+            if ($body->result->id !== 'development_mode') {
+                throw new Exception(t('Development mode status unknown'));
+            }
+
+
+            if (!$body->result->editable) {
+                throw new Exception(t('Not editable, check token permissions'));
+            }
+
+            return strtoupper($body->result->value);
+        } catch (\RuntimeException $e) {
+            return $e->getMessage();
         }
-
-        if ($r = $response->getBodyDecoded()) {
-            if ($r->result == null) {
-                return $response->body;
-            }
-
-            if ($r->result->id !== 'development_mode') {
-                return $response->body;
-            }
-
-            if (!$r->result->editable) {
-                return t('Not editable, check token permissions');
-            }
-
-            return strtoupper($r->result->value);
-        }
-        return t('An Unknown Error Occurred');
     }
 }

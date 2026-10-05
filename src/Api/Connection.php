@@ -2,13 +2,16 @@
 
 namespace Cloudflare\Api;
 
+use ClassKit\Api\ConnectionController;
+use ClassKit\Api\Response\ErrorResponse;
 use Core;
 use Concrete\Core\Entity\Package;
 use Concrete\Core\Package\PackageService;
 use Concrete\Core\Config\Repository\Liaison;
+use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\HttpFoundation\Response;
 
-class Connection extends ConnectionInterface
+class Connection extends ConnectionController
 {
     protected Package $pkg;
 
@@ -93,6 +96,16 @@ class Connection extends ConnectionInterface
     {
         $url = sprintf('/zones/%s/settings/development_mode', $this->getZoneID());
         $response = $this->makeRequest('GET', $url);
+
+        if ($response instanceof ErrorResponse) {
+            throw new \RuntimeException(sprintf(
+                'Cloudflare API request failed: %s returned HTTP %d %s',
+                $response->getUrl(),
+                $response->getStatusCode(),
+                $response->getStatusText($response->getStatusCode())
+            ));
+        }
+
         return $response;
     }
 
@@ -109,6 +122,16 @@ class Connection extends ConnectionInterface
         $response = $this->makeRequest('PATCH', $url, [
             'value' => $value,
         ]);
+
+        if ($response instanceof ErrorResponse) {
+            throw new \RuntimeException(sprintf(
+                'Cloudflare API request failed: %s returned HTTP %d %s',
+                $response->getUrl(),
+                $response->getStatusCode(),
+                $response->getStatusText($response->getStatusCode())
+            ));
+        }
+
         return $response;
     }
 
@@ -123,6 +146,16 @@ class Connection extends ConnectionInterface
         $response = $this->makeRequest('POST', $url, [
             'purge_everything' => true,
         ]);
+
+        if ($response instanceof ErrorResponse) {
+            throw new \RuntimeException(sprintf(
+                'Cloudflare API request failed: %s returned HTTP %d %s',
+                $response->getUrl(),
+                $response->getStatusCode(),
+                $response->getStatusText($response->getStatusCode())
+            ));
+        }
+
         return $response;
     }
 }
