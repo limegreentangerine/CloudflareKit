@@ -6,20 +6,12 @@ use Core;
 use UserGroup;
 use Concrete\Core\User\User;
 use Cloudflare\Log\CloudflareLog;
-use Monolog\Logger as MonologLogger;
 use Concrete\Core\Package\PackageService;
 use Concrete\Core\Config\Repository\Liaison;
 use Cloudflare\Api\Connection as CloudflareApi;
 
 class Cache
 {
-    protected MonologLogger $logger;
-
-    public function __construct()
-    {
-        $this->logger = Core::make(CloudflareLog::class)->getLogger();
-    }
-
     /**
      * Get the value of config
      *
@@ -43,16 +35,6 @@ class Cache
     public static function getApi(): CloudflareApi
     {
         return new CloudflareApi();
-    }
-
-    /**
-     * Get Logger
-     *
-     * @return MonologLogger
-     */
-    public static function getLogger(): MonologLogger
-    {
-        return self::$logger;
     }
 
     /**
@@ -89,9 +71,13 @@ class Cache
             $body = json_decode($response->getContent());
 
             if ($body->success) {
-                self::getLogger()->addInfo('Cloudflare development mode activated.');
+                Core::make(CloudflareLog::class)
+                    ->getLogger()
+                    ->addInfo('Cloudflare development mode activated.');
             } else {
-                self::getLogger()->addWarning('Cloudflare development mode failed to activate.');
+                Core::make(CloudflareLog::class)
+                    ->getLogger()
+                    ->addWarning('Cloudflare development mode failed to activate.');
             }
         }
     }
@@ -106,9 +92,13 @@ class Cache
             $body = json_decode($response->getContent());
 
             if ($body->success) {
-                self::getLogger()->addInfo('Cloudflare development mode deactivated.');
+                Core::make(CloudflareLog::class)
+                    ->getLogger()
+                    ->addInfo('Cloudflare development mode deactivated.');
             } else {
-                self::getLogger()->addWarning('Cloudflare development mode failed to deactivate.');
+                Core::make(CloudflareLog::class)
+                    ->getLogger()
+                    ->addWarning('Cloudflare development mode failed to deactivate.');
             }
         }
     }
@@ -123,10 +113,16 @@ class Cache
             $body = json_decode($response->getContent());
 
             if ($body->success) {
-                self::getLogger()->addInfo('Cloudflare cache successfully cleared by force.');
+                Core::make(CloudflareLog::class)
+                    ->getLogger()
+                    ->addInfo('Cloudflare cache successfully cleared by force.');
             } else {
-                self::getLogger()->addWarning('Cloudflare cache failed to be cleared by force.');
-                self::getLogger()->addInfo(json_encode($body));
+                Core::make(CloudflareLog::class)
+                    ->getLogger()
+                    ->addWarning('Cloudflare cache failed to be cleared by force.');
+                Core::make(CloudflareLog::class)
+                    ->getLogger()
+                    ->addInfo(json_encode($body));
             }
         }
     }
