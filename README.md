@@ -25,21 +25,22 @@ page and registers **Cloudflare Turnstile** as a CAPTCHA library.
 
 Open **Dashboard > Cloudflare** and configure the following:
 
-| Setting              | Description                                                                        |
-| -------------------- | ---------------------------------------------------------------------------------- |
-| Activate             | Enables the package's event-driven Cloudflare actions.                             |
-| Use Development Mode | Enables Development Mode when an administrator logs in, and disables it on logout. |
-| API Base URL         | Cloudflare API URL. Defaults to `https://api.cloudflare.com/client/v4`.            |
-| Zone ID              | The Cloudflare Zone ID for the site.                                               |
-| API Token            | The token used to authenticate Cloudflare API requests.                            |
+| Setting              | Description                                                                                                               |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Activate             | Enables the package's event-driven Cloudflare actions.                                                                    |
+| Use Development Mode | Enables Development Mode for administrators on login and disables it on logout when `cloudflare.use_dev_mode` is enabled. |
+| API Base URL         | Cloudflare API URL. Defaults to `https://api.cloudflare.com/client/v4`.                                                   |
+| Zone ID              | The Cloudflare Zone ID for the site.                                                                                      |
+| API Token            | The token used to authenticate Cloudflare API requests.                                                                   |
 
 Create a scoped API token rather than using a global API key. Allow Zone
-Settings read and edit access for Development Mode. Allow Cache Purge access
-if you want Concrete CMS cache flushes to purge Cloudflare's cache.
+Settings read and edit access (`Zone.Zone Settings`) for Development Mode.
+Allow Cache Purge access (`Zone.Cache Purge`) if you want Concrete CMS cache
+flushes to purge Cloudflare's cache.
 
-When the package is active, an administrator login enables Development Mode
-if **Use Development Mode** is enabled. Logging out disables it. Flushing the
-Concrete CMS cache purges the configured Cloudflare zone's cache.
+When the package is active and `cloudflare.use_dev_mode` is enabled, an
+administrator login enables Development Mode and logging out disables it.
+Flushing the Concrete CMS cache purges the configured Cloudflare zone's cache.
 
 ## API
 

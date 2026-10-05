@@ -4,8 +4,8 @@ namespace Concrete\Package\Cloudflare;
 
 use Core;
 use Events;
-use Concrete\Core\User\Event\User;
 use Concrete\Core\Package\Package;
+use Concrete\Core\User\Event\User;
 use Cloudflare\Package\CaptchaTrait;
 use ClassKit\Package\Traits\PageTrait;
 use Concrete\Core\Package\PackageService;

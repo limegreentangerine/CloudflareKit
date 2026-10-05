@@ -2,13 +2,12 @@
 
 namespace Cloudflare\Api;
 
-use ClassKit\Api\ConnectionController;
-use ClassKit\Api\Response\ErrorResponse;
 use Core;
 use Concrete\Core\Entity\Package;
+use ClassKit\Api\ConnectionController;
+use ClassKit\Api\Response\ErrorResponse;
 use Concrete\Core\Package\PackageService;
 use Concrete\Core\Config\Repository\Liaison;
-use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\HttpFoundation\Response;
 
 class Connection extends ConnectionController
@@ -102,7 +101,7 @@ class Connection extends ConnectionController
                 'Cloudflare API request failed: %s returned HTTP %d %s',
                 $response->getUrl(),
                 $response->getStatusCode(),
-                $response->getStatusText($response->getStatusCode())
+                $response->getStatusText($response->getStatusCode()),
             ));
         }
 
@@ -128,7 +127,7 @@ class Connection extends ConnectionController
                 'Cloudflare API request failed: %s returned HTTP %d %s',
                 $response->getUrl(),
                 $response->getStatusCode(),
-                $response->getStatusText($response->getStatusCode())
+                $response->getStatusText($response->getStatusCode()),
             ));
         }
 
@@ -152,7 +151,7 @@ class Connection extends ConnectionController
                 'Cloudflare API request failed: %s returned HTTP %d %s',
                 $response->getUrl(),
                 $response->getStatusCode(),
-                $response->getStatusText($response->getStatusCode())
+                $response->getStatusText($response->getStatusCode()),
             ));
         }
 
