@@ -1,6 +1,6 @@
 <?php
 
-namespace Concrete\Package\Cloudflare\Controller\SinglePage\Dashboard;
+namespace Concrete\Package\CloudflareKit\Controller\SinglePage\Dashboard;
 
 use Exception;
 use Concrete\Core\Entity\Package;
