@@ -1,6 +1,6 @@
 <?php
 
-namespace Cloudflare\Api;
+namespace CloudflareKit\Api;
 
 use Core;
 use Concrete\Core\Entity\Package;
@@ -22,7 +22,7 @@ class Connection extends ConnectionController
 
     public function __construct()
     {
-        $this->pkg = Core::make(PackageService::class)->getByHandle('cloudflare');
+        $this->pkg = Core::make(PackageService::class)->getByHandle('cloudflare_kit');
         if (!$this->pkg) {
             return;
         }

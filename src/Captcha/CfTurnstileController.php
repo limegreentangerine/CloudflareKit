@@ -1,6 +1,6 @@
 <?php
 
-namespace Concrete\Package\Cloudflare\Captcha;
+namespace Concrete\Package\CloudflareKit\Captcha;
 
 use Exception;
 use Concrete\Core\View\View;

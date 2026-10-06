@@ -2,8 +2,8 @@
 
 namespace Cloudflare\Tests;
 
-use Cloudflare\Api\Connection;
 use PHPUnit\Framework\TestCase;
+use CloudflareKit\Api\Connection;
 use ClassKit\Api\Response\ErrorResponse;
 use ClassKit\Api\Response\Response as ApiResponse;
 

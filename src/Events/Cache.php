@@ -1,14 +1,14 @@
 <?php
 
-namespace Cloudflare\Events;
+namespace CloudflareKit\Events;
 
 use Core;
 use UserGroup;
 use Concrete\Core\User\User;
-use Cloudflare\Log\CloudflareLog;
+use CloudflareKit\Log\CloudflareLog;
 use Concrete\Core\Package\PackageService;
 use Concrete\Core\Config\Repository\Liaison;
-use Cloudflare\Api\Connection as CloudflareApi;
+use CloudflareKit\Api\Connection as CloudflareApi;
 
 class Cache
 {
@@ -19,7 +19,7 @@ class Cache
      */
     public static function getConfig(): ?Liaison
     {
-        $pkg = Core::make(PackageService::class)->getByHandle('cloudflare');
+        $pkg = Core::make(PackageService::class)->getByHandle('cloudflare_kit');
         if (is_object($pkg)) {
             return $pkg->getFileConfig();
         }
