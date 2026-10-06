@@ -7,7 +7,7 @@ use CloudflareKit\Api\Connection;
 
 final class ConnectionConfigurationTest extends TestCase
 {
-    public function testZoneIdAndApiTokenSettersAreFluent(): void
+    public function testBaseUrlAndZoneIdSettersAreFluent(): void
     {
         $connection = new class extends Connection {
             public function __construct() {}
@@ -15,9 +15,7 @@ final class ConnectionConfigurationTest extends TestCase
 
         self::assertSame($connection, $connection->setBaseUrl('https://new.example.test'));
         self::assertSame($connection, $connection->setZoneId('zone-123'));
-        self::assertSame($connection, $connection->setApiToken('token-456'));
         self::assertSame('https://new.example.test', $connection->getBaseUrl());
         self::assertSame('zone-123', $connection->getZoneId());
-        self::assertSame('token-456', $connection->getApiToken());
     }
 }

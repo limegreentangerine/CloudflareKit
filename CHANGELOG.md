@@ -8,6 +8,8 @@ Notable changes to this project are documented here.
 
 - Renamed the Composer package to `limegreentangerine/cloudflare_kit` and the
   PHP API namespace to `CloudflareKit`.
+- Cloudflare API authentication now reads the token from the
+  `CLOUDFLARE_API_KEY` environment variable instead of package configuration.
 - Cloudflare API error responses now throw a `RuntimeException` with the
   failing endpoint and HTTP status.
 
