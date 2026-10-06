@@ -7,7 +7,7 @@ use Concrete\Core\Entity\Package;
 use Concrete\Core\Package\PackageService;
 use Concrete\Core\Config\Repository\Liaison;
 use Concrete\Core\Error\UserMessageException;
-use Cloudflare\Api\Connection as CloudflareApi;
+use CloudflareKit\Api\Connection as CloudflareApi;
 use Concrete\Core\Http\ResponseFactoryInterface;
 use Concrete\Core\Page\Controller\DashboardPageController;
 
