@@ -23,7 +23,7 @@ class Controller extends Package
      *
      * @var string
      */
-    protected $pkgHandle = 'cloudflare';
+    protected $pkgHandle = 'cloudflare_kit';
 
     /**
      * The packages version.

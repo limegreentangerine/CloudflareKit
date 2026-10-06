@@ -1,6 +1,6 @@
 <?php defined('C5_EXECUTE') or die('Access Denied.'); ?>
 
-<?php if (isset($view) && isset($token)) { ?>
+<?php if (isset($view) && isset($token) && isset($form)) { ?>
     <?php if (isset($pkg) && ($pkg->getFileConfig()->get('cloudflare.zone_id') !== null && $pkg->getFileConfig()->get('cloudflare.zone_id') !== '')) { ?>
         <div class="ccm-dashboard-header-buttons">
             <button data-launch-dialog="delete-dialog" class="btn btn-danger">
