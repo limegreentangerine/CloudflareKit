@@ -2,6 +2,21 @@
 
 Notable changes to this project are documented here.
 
+## [Unreleased]
+
+### Changed
+
+- Renamed the Composer package to `limegreentangerine/cloudflare_kit` and the
+  PHP API namespace to `CloudflareKit`.
+- Cloudflare API error responses now throw a `RuntimeException` with the
+  failing endpoint and HTTP status.
+
+### Tests
+
+- Added coverage for the renamed Concrete CMS package controller, package
+  handle, and class autoloader registration.
+- Covered successful API request payloads and API error handling.
+
 ## [1.0.0] - 2026-10-05
 
 ### Added

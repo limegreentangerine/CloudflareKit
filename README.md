@@ -14,7 +14,7 @@ Development Mode controls, and Cloudflare Turnstile CAPTCHA.
 From the root of your Concrete CMS project, install the package with Composer:
 
 ```sh
-composer require limegreentangerine/cloudflare
+composer require limegreentangerine/cloudflare_kit
 ```
 
 Then install **Cloudflare** from the Concrete CMS dashboard under
@@ -44,10 +44,10 @@ Flushing the Concrete CMS cache purges the configured Cloudflare zone's cache.
 
 ## API
 
-The package exposes these operations through `Cloudflare\Api\Connection`:
+The package exposes these operations through `CloudflareKit\Api\Connection`:
 
 ```php
-use Cloudflare\Api\Connection;
+use CloudflareKit\Api\Connection;
 
 $cloudflare = new Connection();
 

@@ -30,6 +30,7 @@ final class PackageControllerTest extends TestCase
         $controller = new \ReflectionClass(\Concrete\Package\CloudflareKit\Controller::class);
 
         self::assertTrue($controller->isSubclassOf(Package::class));
+        self::assertSame('Concrete\\Package\\CloudflareKit', $controller->getNamespaceName());
         self::assertSame('cloudflare_kit', $controller->getDefaultProperties()['pkgHandle']);
         self::assertSame(
             ['src' => '\CloudflareKit'],
