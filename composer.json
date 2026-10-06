@@ -1,5 +1,5 @@
 {
-	"name": "limegreentangerine/cloudflare",
+	"name": "limegreentangerine/cloudflare_kit",
 	"description": "Cloudflare API actions",
 	"type": "concrete5-package",
 	"license": "proprietary",
