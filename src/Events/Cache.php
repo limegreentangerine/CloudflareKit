@@ -3,11 +3,11 @@
 namespace CloudflareKit\Events;
 
 use Core;
-use UserGroup;
 use Concrete\Core\User\User;
 use CloudflareKit\Log\CloudflareLog;
 use Concrete\Core\Package\PackageService;
 use Concrete\Core\Config\Repository\Liaison;
+use Concrete\Core\User\Group\Group as UserGroup;
 use CloudflareKit\Api\Connection as CloudflareApi;
 
 class Cache

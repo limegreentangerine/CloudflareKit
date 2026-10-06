@@ -86,8 +86,11 @@
                 <div class="float-end">
                     <span class="text-muted small"><?php echo t('Required'); ?></span>
                 </div>
-                <?php echo $form->text('token', (isset($formContent)) ? $formContent['token'] : (isset($pkg) ? $pkg->getFileConfig()->get('cloudflare.token') : false)); ?>
-                <div class="help-block"><?php echo t('Permissions: <code>Zone.Zone Settings</code>'); ?></div>
+
+                <div class="alert <?php echo (getenv('CLOUDFLARE_API_KEY')) ? 'alert-success' : 'alert-danger'; ?>">
+                    <?php echo (getenv('CLOUDFLARE_API_KEY')) ? 'API key in environment' : 'API key missing from environment'; ?>
+                </div>
+                <div class="help-block"><?php echo t('API token should be added as an environment variable with key <code>CLOUDFLARE_API_KEY</code>. Permissions required: <code>Zone.Zone Settings:Read</code>, <code>Zone.Cache Purge:Purge</code>'); ?></div>
             </div>
         </fieldset>
 

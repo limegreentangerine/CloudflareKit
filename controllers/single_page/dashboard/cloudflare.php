@@ -7,8 +7,8 @@ use Concrete\Core\Entity\Package;
 use Concrete\Core\Package\PackageService;
 use Concrete\Core\Config\Repository\Liaison;
 use Concrete\Core\Error\UserMessageException;
-use CloudflareKit\Api\Connection as CloudflareApi;
 use Concrete\Core\Http\ResponseFactoryInterface;
+use CloudflareKit\Api\Connection as CloudflareApi;
 use Concrete\Core\Page\Controller\DashboardPageController;
 
 class Cloudflare extends DashboardPageController
@@ -72,7 +72,6 @@ class Cloudflare extends DashboardPageController
 
                 $this->config->save('cloudflare.base_url', $this->request->request('base_url'));
                 $this->config->save('cloudflare.zone_id', $this->request->request('zone_id'));
-                $this->config->save('cloudflare.token', $this->request->request('token'));
 
                 $this->flash('success', t('Cloudflare settings saved.'));
                 return $this->buildRedirect('/dashboard/cloudflare');

@@ -8,6 +8,7 @@ use ClassKit\Api\ConnectionController;
 use ClassKit\Api\Response\ErrorResponse;
 use Concrete\Core\Package\PackageService;
 use Concrete\Core\Config\Repository\Liaison;
+use Concrete\Core\Error\UserMessageException;
 use Symfony\Component\HttpFoundation\Response;
 
 class Connection extends ConnectionController
@@ -18,21 +19,23 @@ class Connection extends ConnectionController
 
     protected string $zoneId;
 
-    protected string $apiToken;
-
     public function __construct()
     {
         $this->pkg = Core::make(PackageService::class)->getByHandle('cloudflare_kit');
         if (!$this->pkg) {
-            return;
+            throw new UserMessageException(t('CloudflareKit package not installed.'), 404);
         }
 
         $this->config = $this->pkg->getFileConfig();
 
         $this->setZoneID($this->config->get('cloudflare.zone_id'));
-        $this->setApiToken($this->config->get('cloudflare.token'));
+
+        if (!getenv('CLOUDFLARE_API_KEY')) {
+            throw new UserMessageException(t('Cloudflare API key missing.'), 401);
+        }
+
         $headers = [
-            'Authorization' => 'Bearer ' . $this->getApiToken(),
+            'Authorization' => 'Bearer ' . getenv('CLOUDFLARE_API_KEY'),
         ];
 
         parent::__construct($this->config->get('cloudflare.base_url'), 'json', $headers);
@@ -58,30 +61,6 @@ class Connection extends ConnectionController
     public function setZoneId(string $zoneId): self
     {
         $this->zoneId = $zoneId;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of apiToken
-     *
-     * @return string
-     */
-    public function getApiToken(): string
-    {
-        return $this->apiToken;
-    }
-
-    /**
-     * Set the value of apiToken
-     *
-     * @param string $apiToken
-     *
-     * @return self
-     */
-    public function setApiToken(string $apiToken): self
-    {
-        $this->apiToken = $apiToken;
 
         return $this;
     }
