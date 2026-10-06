@@ -4,8 +4,56 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a88cd61c7fb3d51bc8e92f40e12a5e51",
-    "packages": [],
+    "content-hash": "3b8536a28bb9b09241dbc7cb20aac385",
+    "packages": [
+        {
+            "name": "limegreentangerine/class_kit",
+            "version": "1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/limegreentangerine/ClassKit.git",
+                "reference": "466b96812706890c395711acaeac3ca5b8f14a19"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/limegreentangerine/ClassKit/zipball/466b96812706890c395711acaeac3ca5b8f14a19",
+                "reference": "466b96812706890c395711acaeac3ca5b8f14a19",
+                "shasum": ""
+            },
+            "require-dev": {
+                "concrete5/core": "^9.2",
+                "friendsofphp/php-cs-fixer": "^3.95",
+                "php": "^8.4",
+                "phpunit/phpunit": "^11"
+            },
+            "type": "concrete5-package",
+            "autoload": {
+                "psr-4": {
+                    "ClassKit\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lee Jones",
+                    "email": "prolific.jones82@gmail.com"
+                },
+                {
+                    "name": "David Hendy",
+                    "email": "david@limegreentangerine.co.uk"
+                }
+            ],
+            "description": "Collection of helper classes for LGT packages.",
+            "support": {
+                "issues": "https://github.com/limegreentangerine/ClassKit/issues",
+                "source": "https://github.com/limegreentangerine/ClassKit/tree/1.0.6"
+            },
+            "time": "2026-10-05T11:54:15+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "carbonphp/carbon-doctrine-types",

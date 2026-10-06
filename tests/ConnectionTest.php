@@ -4,7 +4,8 @@ namespace Cloudflare\Tests;
 
 use Cloudflare\Api\Connection;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use ClassKit\Api\Response\ErrorResponse;
+use ClassKit\Api\Response\Response as ApiResponse;
 
 final class ConnectionTest extends TestCase
 {
@@ -17,7 +18,7 @@ final class ConnectionTest extends TestCase
 
         self::assertSame('GET', $connection->method);
         self::assertSame('/zones/zone-123/settings/development_mode', $connection->url);
-        self::assertSame([], $connection->data);
+        self::assertNull($connection->data);
         self::assertSame(200, $response->getStatusCode());
     }
 
@@ -54,26 +55,76 @@ final class ConnectionTest extends TestCase
         self::assertSame('/zones/zone-123/purge_cache', $connection->url);
         self::assertSame(['purge_everything' => true], $connection->data);
     }
+
+    public function testDevelopmentModeRequestThrowsWhenTheApiReturnsAnError(): void
+    {
+        $connection = new TestConnection();
+        $connection->setZoneId('zone-123');
+        $connection->response = new ErrorResponse('upstream failed', 503);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Cloudflare API request failed: /zones/zone-123/settings/development_mode returned HTTP 503 Service Unavailable',
+        );
+
+        $connection->getDevelopmentMode();
+    }
+
+    public function testSetDevelopmentModeThrowsWhenTheApiReturnsAnError(): void
+    {
+        $connection = new TestConnection();
+        $connection->setZoneId('zone-123');
+        $connection->response = new ErrorResponse('upstream failed', 503);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Cloudflare API request failed: /zones/zone-123/settings/development_mode returned HTTP 503 Service Unavailable',
+        );
+
+        $connection->setDevelopmentMode('on');
+    }
+
+    public function testPurgeCacheThrowsWhenTheApiReturnsAnError(): void
+    {
+        $connection = new TestConnection();
+        $connection->setZoneId('zone-123');
+        $connection->response = new ErrorResponse('upstream failed', 503);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Cloudflare API request failed: /zones/zone-123/purge_cache returned HTTP 503 Service Unavailable',
+        );
+
+        $connection->purgeCache();
+    }
 }
 
 final class TestConnection extends Connection
 {
     public string $method;
     public string $url;
-    public array $data;
+    public ?array $data;
+    public ApiResponse $response;
 
-    public function __construct() {}
+    public function __construct()
+    {
+        $this->response = new ApiResponse(['success' => true]);
+    }
 
-    protected function makeRequest(
+    public function makeRequest(
         string $method,
         string $apiUrl,
-        array $data = [],
-        array $headers = [],
-    ): JsonResponse {
+        ?array $data = null,
+        ?array $headers = [],
+    ): ApiResponse {
         $this->method = $method;
         $this->url = $apiUrl;
         $this->data = $data;
 
-        return new JsonResponse(['success' => true]);
+        if ($this->response instanceof ErrorResponse) {
+            $this->response->setUrl($apiUrl);
+        }
+
+        return $this->response;
     }
 }

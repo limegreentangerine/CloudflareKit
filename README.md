@@ -1,56 +1,50 @@
-# Cloudflare
+# Cloudflare for Concrete CMS
 
-Cloudflare integrations for Concrete CMS, including Cloudflare API actions,
-cache management, Development Mode support, and Cloudflare Turnstile CAPTCHA.
+Cloudflare integrations for Concrete CMS, including cache management,
+Development Mode controls, and Cloudflare Turnstile CAPTCHA.
 
 ## Requirements
 
 - PHP 8.4 or newer
 - Concrete CMS 9.5.0 or newer
-- A Cloudflare API token with the permissions required by the features you
-  enable
+- A Cloudflare API token with the permissions needed for the features you use
 
 ## Installation
 
-Install the package with Composer from the project root:
+From the root of your Concrete CMS project, install the package with Composer:
 
-```bash
+```sh
 composer require limegreentangerine/cloudflare
 ```
 
 Then install **Cloudflare** from the Concrete CMS dashboard under
-**Dashboard > Extend concrete5**. Installation adds the Cloudflare dashboard
+**Extend concrete5**. Package installation adds the **Cloudflare** dashboard
 page and registers **Cloudflare Turnstile** as a CAPTCHA library.
 
 ## Configuration
 
-Open **Dashboard > Cloudflare** and configure:
+Open **Dashboard > Cloudflare** and configure the following:
 
-| Setting              | Description                                                                     |
-| -------------------- | ------------------------------------------------------------------------------- |
-| Activate             | Enables the package’s event-driven Cloudflare actions.                          |
-| Use Development Mode | Enables Development Mode for administrators while they are logged in.           |
-| API Base URL         | Cloudflare API base URL. The default is `https://api.cloudflare.com/client/v4`. |
-| Zone ID              | The Cloudflare Zone ID for the site.                                            |
-| API Token            | A Cloudflare API token used to authenticate API requests.                       |
+| Setting              | Description                                                                                                               |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Activate             | Enables the package's event-driven Cloudflare actions.                                                                    |
+| Use Development Mode | Enables Development Mode for administrators on login and disables it on logout when `cloudflare.use_dev_mode` is enabled. |
+| API Base URL         | Cloudflare API URL. Defaults to `https://api.cloudflare.com/client/v4`.                                                   |
+| Zone ID              | The Cloudflare Zone ID for the site.                                                                                      |
+| API Token            | The token used to authenticate Cloudflare API requests.                                                                   |
 
-The API token is stored in the package configuration. Use a token limited to
-the permissions required by this package rather than a global API key. The
-dashboard currently requires the `Zone.Zone Settings` permission for
-Development Mode operations.
+Create a scoped API token rather than using a global API key. Allow Zone
+Settings read and edit access (`Zone.Zone Settings`) for Development Mode.
+Allow Cache Purge access (`Zone.Cache Purge`) if you want Concrete CMS cache
+flushes to purge Cloudflare's cache.
 
-## Cloudflare actions
+When the package is active and `cloudflare.use_dev_mode` is enabled, an
+administrator login enables Development Mode and logging out disables it.
+Flushing the Concrete CMS cache purges the configured Cloudflare zone's cache.
 
-When the package is active:
+## API
 
-- Logging in as a member of the **Administrators** group enables Cloudflare
-  Development Mode when **Use Development Mode** is enabled.
-- Logging out disables Development Mode.
-- Flushing the Concrete CMS cache purges the Cloudflare cache for the
-  configured zone.
-
-The API connection is available through `Cloudflare\Api\Connection` and
-provides:
+The package exposes these operations through `Cloudflare\Api\Connection`:
 
 ```php
 use Cloudflare\Api\Connection;
@@ -58,46 +52,38 @@ use Cloudflare\Api\Connection;
 $cloudflare = new Connection();
 
 $status = $cloudflare->getDevelopmentMode();
-$cloudflare->setDevelopmentMode('on'); // or 'off'
+$cloudflare->setDevelopmentMode('on'); // Set to 'off' to disable.
 $cloudflare->purgeCache();
 ```
 
-Each method returns a Symfony `Response` containing the Cloudflare request
-result.
+Each method returns a Symfony `Response` containing the Cloudflare API
+response. API error responses cause a `RuntimeException`.
 
 ## Cloudflare Turnstile
 
-Installing the package registers a CAPTCHA library with the handle
-`cfTurnstile`. Configure its site key, secret key, theme, size, execution mode,
-and appearance in the Concrete CMS CAPTCHA settings, then select **Cloudflare
-Turnstile** wherever Concrete CMS offers a CAPTCHA provider.
-
-Turnstile verification is performed server-side against Cloudflare’s
-`siteverify` endpoint. Missing tokens, unsuccessful verification, invalid
-responses, and HTTP errors are rejected and logged.
+Configure the Turnstile site key, secret key, theme, size, execution mode, and
+appearance in Concrete CMS's CAPTCHA settings. Then select **Cloudflare
+Turnstile** wherever Concrete CMS offers a CAPTCHA provider. Turnstile tokens
+are verified server-side using Cloudflare's Siteverify endpoint.
 
 ## Development
 
-Install development dependencies and run the test suite:
+Install the development dependencies and run the test suite:
 
-```bash
+```sh
 composer install
 composer test
 ```
 
-Useful Composer scripts include:
+Other useful Composer scripts:
 
-```bash
+```sh
 composer format:check  # Check PHP and JavaScript formatting
 composer format        # Apply PHP and JavaScript formatting
 composer test-coverage # Run PHPUnit with text coverage output
 ```
 
-Continuous integration runs on pushes to `main` and manual workflow
-dispatches. It uses PHP 8.4, installs dependencies with Composer, and runs
-`composer test`. After the tests pass, the workflow dispatches a
-`package-tests-passed` event to the downstream package repository.
-
 ## License
 
-This package is released under the MIT License.
+This project is released under the MIT License. See [LICENSE.TXT](LICENSE.TXT)
+for the full text.

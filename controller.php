@@ -4,9 +4,10 @@ namespace Concrete\Package\Cloudflare;
 
 use Core;
 use Events;
-use Cloudflare\Package\PageTrait;
 use Concrete\Core\Package\Package;
+use Concrete\Core\User\Event\User;
 use Cloudflare\Package\CaptchaTrait;
+use ClassKit\Package\Traits\PageTrait;
 use Concrete\Core\Package\PackageService;
 use Cloudflare\Events\Cache as CacheEvent;
 
@@ -79,7 +80,9 @@ class Controller extends Package
      *     'other_package_4' => ['2.0', '2.9'],
      * ]
      */
-    protected $packageDependencies = [];
+    protected $packageDependencies = [
+        'class_kit' => true,
+    ];
 
     /**
      * Package class autoloader registrations
@@ -104,7 +107,7 @@ class Controller extends Package
 
     protected function registerEvents()
     {
-        Events::addListener('on_user_login', function (\Concrete\Core\User\Event\User $event) {
+        Events::addListener('on_user_login', function (User $event) {
             $user = $event->getUserObject();
             CacheEvent::enableDevMode($user);
         });
