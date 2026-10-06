@@ -24,7 +24,6 @@ class Cloudflare extends DashboardPageController
     protected function validate(\Concrete\Core\Http\Request $request)
     {
         $vstrings = $this->app->make('helper/validation/strings');
-        $vnumbers = $this->app->make('helper/validation/numbers');
 
         if (!$vstrings->notempty($request->request('base_url'))) {
             $this->error->add(t('Please enter a URL'), 'base_url');
@@ -37,16 +36,16 @@ class Cloudflare extends DashboardPageController
 
     public function on_start()
     {
-        parent::on_start();
-
-        $this->pkg = $this->app->make(PackageService::class)->getByHandle('cloudflare');
-        if (!is_object($this->pkg)) {
-            throw new UserMessageException(t('Cloudflare Package not found'));
+        $this->pkg = $this->app->make(PackageService::class)->getByHandle('cloudflare_kit');
+        if ($this->pkg == null) {
+            throw new UserMessageException(t('CloudflareKit Package not found'));
         }
         $this->set('pkg', $this->pkg);
 
         $this->config = $this->pkg->getFileConfig();
         $this->set('config', $this->config);
+
+        parent::on_start();
     }
 
     public function save()

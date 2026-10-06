@@ -1,6 +1,6 @@
 <?php
 
-namespace Cloudflare\Log;
+namespace CloudflareKit\Log;
 
 use ClassKit\Log\Logger;
 

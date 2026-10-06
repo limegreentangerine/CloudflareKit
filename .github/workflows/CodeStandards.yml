@@ -34,4 +34,4 @@ jobs:
         run: composer format:check
 
       - name: Check types
-        run: composer check
+        run: composer typecheck

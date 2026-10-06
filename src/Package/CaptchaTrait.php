@@ -1,6 +1,6 @@
 <?php
 
-namespace Cloudflare\Package;
+namespace CloudflareKit\Package;
 
 use Concrete\Core\Captcha\Library as CaptchaLibrary;
 

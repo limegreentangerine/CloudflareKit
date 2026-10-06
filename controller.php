@@ -1,15 +1,15 @@
 <?php
 
-namespace Concrete\Package\Cloudflare;
+namespace Concrete\Package\CloudflareKit;
 
 use Core;
 use Events;
 use Concrete\Core\Package\Package;
 use Concrete\Core\User\Event\User;
-use Cloudflare\Package\CaptchaTrait;
 use ClassKit\Package\Traits\PageTrait;
+use CloudflareKit\Package\CaptchaTrait;
 use Concrete\Core\Package\PackageService;
-use Cloudflare\Events\Cache as CacheEvent;
+use CloudflareKit\Events\Cache as CacheEvent;
 
 class Controller extends Package
 {
@@ -93,7 +93,7 @@ class Controller extends Package
      * @var array
      */
     protected $pkgAutoloaderRegistries = [
-        'src' => '\Cloudflare',
+        'src' => '\CloudflareKit',
     ];
 
     /**

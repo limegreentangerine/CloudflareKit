@@ -2,8 +2,8 @@
 
 namespace Cloudflare\Tests;
 
-use Cloudflare\Api\Connection;
 use PHPUnit\Framework\TestCase;
+use CloudflareKit\Api\Connection;
 
 final class ConnectionConfigurationTest extends TestCase
 {
