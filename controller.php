@@ -29,7 +29,7 @@ class Controller extends Package
      *
      * @var string
      */
-    protected $pkgVersion = '1.0.0';
+    protected $pkgVersion = '1.0.3';
 
     /**
      * The minimum Concrete version compatible with the package.
@@ -93,6 +93,7 @@ class Controller extends Package
      */
     protected $pkgAutoloaderRegistries = [
         'src' => '\CloudflareKit',
+        'src/Captcha' => '\Concrete\Package\CloudflareKit\Captcha',
     ];
 
     /**
