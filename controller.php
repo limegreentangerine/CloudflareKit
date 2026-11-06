@@ -93,6 +93,7 @@ class Controller extends Package
      */
     protected $pkgAutoloaderRegistries = [
         'src' => '\CloudflareKit',
+        'src/Captcha' => '\Concrete\Package\CloudflareKit\Captcha',
     ];
 
     /**
