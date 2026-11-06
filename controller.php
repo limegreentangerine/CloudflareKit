@@ -3,10 +3,10 @@
 namespace Concrete\Package\CloudflareKit;
 
 use Core;
-use Concrete\Core\Support\Facade\Events;
 use Concrete\Core\Package\Package;
 use ClassKit\Package\Traits\PageTrait;
 use CloudflareKit\Package\CaptchaTrait;
+use Concrete\Core\Support\Facade\Events;
 use Concrete\Core\Package\PackageService;
 use CloudflareKit\Events\Cache as CacheEvent;
 
