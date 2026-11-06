@@ -27,7 +27,7 @@ class CfTurnstileController extends AbstractController implements CaptchaInterfa
             $scriptAdded = true;
         }
 
-        return sprintf(
+        $code = sprintf(
             '<div class="cf-turnstile" data-sitekey="%s" data-theme="%s" data-size="%s" data-execution="%s" data-appearance="%s"></div>',
             h($config->get('captcha.cfTurnstile.site_key')),
             h($config->get('captcha.cfTurnstile.theme', 'auto')),
@@ -35,6 +35,8 @@ class CfTurnstileController extends AbstractController implements CaptchaInterfa
             h($config->get('captcha.cfTurnstile.execution', 'render')),
             h($config->get('captcha.cfTurnstile.appearance', 'always')),
         );
+
+        return $code;
     }
 
     /**
@@ -54,7 +56,7 @@ class CfTurnstileController extends AbstractController implements CaptchaInterfa
      */
     public function display()
     {
-        return $this->generateWidget();
+        // The widget is rendered by showInput(); there is no separate picture.
     }
 
     /**
@@ -64,7 +66,7 @@ class CfTurnstileController extends AbstractController implements CaptchaInterfa
      */
     public function showInput()
     {
-        return $this->generateWidget();
+        echo $this->generateWidget();
     }
 
     /**
