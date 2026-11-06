@@ -3,30 +3,11 @@
 namespace CloudflareKit\Events;
 
 use Core;
-use Concrete\Core\User\User;
 use CloudflareKit\Log\CloudflareLog;
-use Concrete\Core\Package\PackageService;
-use Concrete\Core\Config\Repository\Liaison;
-use Concrete\Core\User\Group\Group as UserGroup;
 use CloudflareKit\Api\Connection as CloudflareApi;
 
 class Cache
 {
-    /**
-     * Get the value of config
-     *
-     * @return ?Liaison
-     */
-    public static function getConfig(): ?Liaison
-    {
-        $pkg = Core::make(PackageService::class)->getByHandle('cloudflare_kit');
-        if (is_object($pkg)) {
-            return $pkg->getFileConfig();
-        }
-
-        return null;
-    }
-
     /**
      * Get the value of api
      *
@@ -44,63 +25,7 @@ class Cache
      */
     public static function getActivate(): bool
     {
-        $config = self::getConfig();
-        return ($config) ? $config->get('cloudflare.activate') : false;
-    }
-
-    /**
-     * Use Dev Mode on use login/logout
-     *
-     * @return bool
-     */
-    public static function useDevMode(): bool
-    {
-        $config = self::getConfig();
-        return ($config) ? $config->get('cloudflare.use_dev_mode') : false;
-    }
-
-    /**
-     * Enable Dev Mode
-     */
-    public static function enableDevMode(User $user): void
-    {
-        $adminGroup = UserGroup::getByName('Administrators');
-
-        if (self::getActivate() && self::useDevMode() && $user->inGroup($adminGroup)) {
-            $response = self::getApi()->setDevelopmentMode('on');
-            $body = json_decode($response->getContent());
-
-            if ($body->success) {
-                Core::make(CloudflareLog::class)
-                    ->getLogger()
-                    ->addInfo('Cloudflare development mode activated.');
-            } else {
-                Core::make(CloudflareLog::class)
-                    ->getLogger()
-                    ->addWarning('Cloudflare development mode failed to activate.');
-            }
-        }
-    }
-
-    /**
-     * Disable Dev Mode
-     */
-    public static function disableDevMode(): void
-    {
-        if (self::getActivate() && self::useDevMode()) {
-            $response = self::getApi()->setDevelopmentMode('off');
-            $body = json_decode($response->getContent());
-
-            if ($body->success) {
-                Core::make(CloudflareLog::class)
-                    ->getLogger()
-                    ->addInfo('Cloudflare development mode deactivated.');
-            } else {
-                Core::make(CloudflareLog::class)
-                    ->getLogger()
-                    ->addWarning('Cloudflare development mode failed to deactivate.');
-            }
-        }
+        return (bool) (isset($_ENV['CLOUDFLARE_ACTIVE'])) ? $_ENV['CLOUDFLARE_ACTIVE'] : ((isset($_SERVER['CLOUDFLARE_ACTIVE'])) ? $_SERVER['CLOUDFLARE_ACTIVE'] : false);
     }
 
     /**

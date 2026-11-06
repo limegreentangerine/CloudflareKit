@@ -3,11 +3,10 @@
 namespace Concrete\Package\CloudflareKit;
 
 use Core;
-use Events;
 use Concrete\Core\Package\Package;
-use Concrete\Core\User\Event\User;
 use ClassKit\Package\Traits\PageTrait;
 use CloudflareKit\Package\CaptchaTrait;
+use Concrete\Core\Support\Facade\Events;
 use Concrete\Core\Package\PackageService;
 use CloudflareKit\Events\Cache as CacheEvent;
 
@@ -107,15 +106,6 @@ class Controller extends Package
 
     protected function registerEvents()
     {
-        Events::addListener('on_user_login', function (User $event) {
-            $user = $event->getUserObject();
-            CacheEvent::enableDevMode($user);
-        });
-
-        Events::addListener('on_user_logout', function () {
-            CacheEvent::disableDevMode();
-        });
-
         Events::addListener('on_cache_flush', function () {
             CacheEvent::forceCacheClear();
         });
@@ -123,9 +113,6 @@ class Controller extends Package
 
     protected function installOrUpgrade(\Concrete\Core\Entity\Package $pkg): void
     {
-        // add dashboard page
-        $this->addSinglePage('/dashboard/cloudflare', $pkg, t('Cloudflare'), t('Cloudflare API settings.'));
-
         // install CF Turnstile as Captcha option
         $this->addCaptchaLibrary('cfTurnstile', t('Cloudflare Turnstile'), $pkg);
     }

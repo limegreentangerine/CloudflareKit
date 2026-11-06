@@ -26,19 +26,25 @@ class Connection extends ConnectionController
             throw new UserMessageException(t('CloudflareKit package not installed.'), 404);
         }
 
-        $this->config = $this->pkg->getFileConfig();
+        $baseUrl = 'https://api.cloudflare.com/client/v4';
+        $zoneId = (isset($_ENV['CLOUDFLARE_ZONE_ID'])) ? $_ENV['CLOUDFLARE_ZONE_ID'] : ((isset($_SERVER['CLOUDFLARE_ZONE_ID'])) ? $_SERVER['CLOUDFLARE_ZONE_ID'] : false);
+        $apiKey = (isset($_ENV['CLOUDFLARE_API_KEY'])) ? $_ENV['CLOUDFLARE_API_KEY'] : ((isset($_SERVER['CLOUDFLARE_API_KEY'])) ? $_SERVER['CLOUDFLARE_API_KEY'] : false);
 
-        $this->setZoneID($this->config->get('cloudflare.zone_id'));
-
-        if (!getenv('CLOUDFLARE_API_KEY')) {
+        if (!$zoneId) {
             throw new UserMessageException(t('Cloudflare API key missing.'), 401);
         }
 
+        if (!$apiKey) {
+            throw new UserMessageException(t('Cloudflare API key missing.'), 401);
+        }
+
+        $this->setZoneID($zoneId);
+
         $headers = [
-            'Authorization' => 'Bearer ' . getenv('CLOUDFLARE_API_KEY'),
+            'Authorization' => 'Bearer ' . $apiKey,
         ];
 
-        parent::__construct($this->config->get('cloudflare.base_url'), 'json', $headers);
+        parent::__construct($baseUrl, 'json', $headers);
     }
 
     /**
@@ -63,54 +69,6 @@ class Connection extends ConnectionController
         $this->zoneId = $zoneId;
 
         return $this;
-    }
-
-    /**
-     * Get Development Mode State
-     *
-     * @return Response
-     */
-    public function getDevelopmentMode(): Response
-    {
-        $url = sprintf('/zones/%s/settings/development_mode', $this->getZoneID());
-        $response = $this->makeRequest('GET', $url);
-
-        if ($response instanceof ErrorResponse) {
-            throw new \RuntimeException(sprintf(
-                'Cloudflare API request failed: %s returned HTTP %d %s',
-                $response->getUrl(),
-                $response->getStatusCode(),
-                $response->getStatusText($response->getStatusCode()),
-            ));
-        }
-
-        return $response;
-    }
-
-    /**
-     * Set Development Mode State
-     *
-     * @param string $value
-     *
-     * @return Response
-     */
-    public function setDevelopmentMode(string $value = 'off'): Response
-    {
-        $url = sprintf('/zones/%s/settings/development_mode', $this->getZoneID());
-        $response = $this->makeRequest('PATCH', $url, [
-            'value' => $value,
-        ]);
-
-        if ($response instanceof ErrorResponse) {
-            throw new \RuntimeException(sprintf(
-                'Cloudflare API request failed: %s returned HTTP %d %s',
-                $response->getUrl(),
-                $response->getStatusCode(),
-                $response->getStatusText($response->getStatusCode()),
-            ));
-        }
-
-        return $response;
     }
 
     /**
